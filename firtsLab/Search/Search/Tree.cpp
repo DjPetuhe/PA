@@ -10,16 +10,15 @@ Tree::Tree(country newC)
 int Tree::getHeuristic(Node* current)
 {
 	int heuristic = 0;
-	vector<vector<bool> > graph;
+	vector<vector<bool> > graph = c.getCountryGraph();
 	for (int i = 0; i < c.getAmountOfRegions(); i++) {
 		for (int j = 0; j <= i; j++) {
-			if ([i][j] == 1 && regionList.at(i).color == regionList.at(j).color) {
+			if (graph[i][j] == 1 && current->regionsColor[i] == current->regionsColor[j])
+			{
 				heuristic++;
-				//cout << i + 1 << " & " << j +1<< " have same color";
 			}
 
 		}
-		//cout << "\n";
 	}
 	return heuristic;
 }

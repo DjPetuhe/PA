@@ -10,7 +10,7 @@ private:
 		std::vector<int> regionsColor;
 		std::vector<Node*> childs;
 		Node(std::vector<int> newRegionsColor) { regionsColor = newRegionsColor; childs.clear(); }
-		Node* makeNode(std::vector<int> newRegionsColor)
+		static Node* makeNode(std::vector<int> newRegionsColor)
 		{
 			Node* n = new Node(newRegionsColor);
 			n->regionsColor = newRegionsColor;
@@ -22,5 +22,7 @@ private:
 	country c;
 	int getHeuristic(Node* current);
 public:
+	Tree(country newC);
+	std::vector<int> ColorizeMap();
 };
 
