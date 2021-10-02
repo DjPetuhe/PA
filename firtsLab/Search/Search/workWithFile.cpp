@@ -4,7 +4,7 @@
 #include "workWithFile.h"
 using namespace std;
 
-country workWithFile::readCountry(std::string directory)
+country workWithFile::readCountry(string directory)
 {
 	ifstream fileName(directory);
 	if (fileName.is_open())
@@ -38,7 +38,31 @@ country workWithFile::readCountry(std::string directory)
 	}
 }
 
-void workWithFile::writeColored(std::string directory, country c)
+void workWithFile::writeColored(string directory, country c)
 {
+	ofstream fileName(directory);
+	if (fileName.is_open())
+	{
+		vector<string> regionsName = c.getRegionsName();
+		vector<int> regionsColor = c.getRegionsColor();
+		string tempColor;
+		for (int i = 0; i < c.getAmountOfRegions(); i++)
+		{
+			if (regionsColor[i] == 1) { tempColor = "red"; }
+			else if (regionsColor[i] == 2) { tempColor = "green"; }
+			else if (regionsColor[i] == 3) { tempColor = "blue"; }
+			else if (regionsColor[i] == 4) { tempColor = "yellow"; }
+			else { tempColor = "empty"; }
+			fileName << regionsName[i] << " -> " << tempColor << endl;
+		}
+	}
+}
 
+std::string workWithFile::askDirectory(string question)
+{
+	cout << question;
+	string dir;
+	cin >> dir;
+	cout << endl;
+	return dir;
 }

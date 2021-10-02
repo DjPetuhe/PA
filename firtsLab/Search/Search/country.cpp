@@ -16,6 +16,10 @@ country::country(std::string newName, int newAmountOfRegions, std::vector<std::s
 	this->regionsName = newRegionsName;
 	this->countryGraph = newCountryGraph;
 	this->regionsColor.resize(amountOfRegions);
+	for (int i = 0; i < amountOfRegions; i++)
+	{
+		regionsColor[i] = 0;
+	}
 }
 
 std::string country::getCountryName()
