@@ -58,7 +58,7 @@ void workWithFile::writeColored(string directory, country c)
 	}
 }
 
-std::string workWithFile::askDirectory(string question)
+std::string workWithFile::askString(string question)
 {
 	cout << question;
 	string dir;
