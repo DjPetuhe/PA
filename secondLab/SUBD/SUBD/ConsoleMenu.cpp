@@ -73,6 +73,9 @@ void ConsoleMenu::editElement(Btree& tree, int key, string newValue)
 	else
 	{
 		cout << "Element was edited:\nkey: " << editedElement.first << " new value: " << editedElement.second << endl;
+		std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+		file.close();
+		tree.dfsTraverse(true);
 	}
 }
 
