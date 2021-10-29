@@ -16,6 +16,15 @@ class Btree
 		void bTreeInsertNonfull(std::pair<int, std::string> newValue);
 		void dfsTraverse(bool toFile);
 		std::pair<int, std::string> bTreeSearch(int key);
+		bool bTreeDelete(int key);
+		void bTreeRemoveFromLeaf(int index);
+		void bTreeRemoveFromNonLeaf(int index);
+		void fill(int index);
+		std::pair<int, std::string> getPredecessor(int index);
+		std::pair<int, std::string> getSuccessor(int index);
+		void borrowFromPrevious(int index);
+		void borrowFromNext(int index);
+		void merge(int index);
 	};
 	Node* root;
 	int t;
@@ -24,5 +33,7 @@ public:
 	void dfsTraverse(bool toFile);
 	std::pair<int,std::string> bTreeSearch(int key);
 	void bTreeInsert(std::pair<int, std::string> newValue);
+	bool bTreeDelete(int key);
+	bool bTreeEdit(int key, std::string newStr);
 };
 

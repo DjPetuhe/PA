@@ -62,6 +62,34 @@ void Btree::bTreeInsert(pair<int, string> newValue)
 	}
 }
 
+bool Btree::bTreeDelete(int key)
+{
+	if (!root)
+	{
+		return false;
+	}
+	root->bTreeDelete(key);
+	if (root->realSize == 0)
+	{
+		Node* temp = root;
+		if (root->leaf)
+		{
+			root = NULL;
+		}
+		else
+		{
+			root = root->childs[0];
+		}
+		delete temp;
+	}
+	return false;
+}
+
+bool Btree::bTreeEdit(int key, std::string newStr)
+{
+	return false;
+}
+
 Btree::Node::Node(int newT, bool newLeaf)
 {
 	t = newT;
@@ -163,7 +191,8 @@ void Btree::Node::dfsTraverse(bool toFile)
 
 pair<int,string> Btree::Node::bTreeSearch(int key)
 {
-	pair<int, string> returnment = Alghoritms::sharrSearch(this->values, this->realSize, key);
+	int buf;
+	pair<int, string> returnment = Alghoritms::sharrSearch(this->values, this->realSize, key, buf);
 	if (returnment.first == -1)
 	{
 		if (leaf == true)
@@ -187,4 +216,200 @@ pair<int,string> Btree::Node::bTreeSearch(int key)
 	{
 		return returnment;
 	}
+}
+
+bool Btree::Node::bTreeDelete(int key)
+{
+	int index;
+	pair<int, string> returnment = Alghoritms::sharrSearch(this->values, this->realSize, key, index);
+	if (returnment.first != -1)
+	{
+		if (leaf)
+		{
+			bTreeRemoveFromLeaf(index);
+		}
+		else
+		{
+			bTreeRemoveFromNonLeaf(index);
+		}
+
+	}
+	else
+	{
+		if (leaf)
+		{
+			return false;
+		}
+		bool last = false;
+		if (index == realSize)
+		{
+			last = true;
+		}
+		if (childs[index]->realSize < t)
+		{
+			fill(index);
+		}
+		if (last && index > realSize)
+		{
+			childs[index - 1]->bTreeDelete(key);
+		}
+		else
+		{
+			childs[index]->bTreeDelete(key);
+		}
+	}
+	return false;
+}
+
+void Btree::Node::bTreeRemoveFromLeaf(int index)
+{
+	for (int i = index + 1; i < realSize; i++)
+	{
+		values[i - 1] = values[i];
+	}
+	realSize--;
+}
+
+void Btree::Node::bTreeRemoveFromNonLeaf(int index)
+{
+	int key = this->values[index].first;
+	if (childs[index]->realSize >= t)
+	{
+		pair<int,string> predecessor = getPredecessor(index);
+		this->values[index] = predecessor;
+		this->childs[index]->bTreeDelete(predecessor.first);
+	}
+	else if (childs[index + 1]->realSize >= t)
+	{
+		pair<int,string> successor = getSuccessor(index);
+		values[index] = successor;
+		childs[index + 1]->bTreeDelete(successor.first);
+	}
+	else
+	{
+		merge(index);
+		childs[index]->bTreeDelete(key);
+	}
+}
+
+void Btree::Node::fill(int index)
+{
+	if (index != 0 && childs[index - 1]->realSize >= t)
+	{
+		borrowFromPrevious(index);
+	}
+	else if (index != realSize && childs[index + 1]->realSize >= t)
+	{
+		borrowFromNext(index);
+	}
+	else
+	{
+		if (index != this->realSize)
+		{
+			merge(index);
+		}
+		else
+		{
+			merge(index - 1);
+		}
+	}
+}
+
+std::pair<int, std::string> Btree::Node::getPredecessor(int index)
+{
+	Node* current = childs[index];
+	while (!current->leaf)
+	{
+		current = current->childs[current->realSize];
+	}
+	return current->values[current->realSize - 1];
+}
+
+std::pair<int, std::string> Btree::Node::getSuccessor(int index)
+{
+	Node* current = childs[index + 1];
+	while (!current->leaf)
+	{
+		current = current->childs[0];
+	}
+	return current->values[0];
+}
+
+void Btree::Node::borrowFromPrevious(int index)
+{
+	Node* child = childs[index];
+	Node* sibling = childs[index - 1];
+	for (int i = child->realSize - 1; i >= 0; --i)
+	{
+		child->values[i + 1] = child->values[i];
+	}
+	if (!child->leaf)
+	{
+		for (int i = child->realSize; i >= 0; --i)
+		{
+			child->childs[i + 1] = child->childs[i];
+		}
+	}
+	child->values[0] = values[index - 1];
+	if (!child->leaf)
+	{
+		child->childs[0] = sibling->childs[sibling->realSize];
+	}
+	values[index - 1] = sibling->values[sibling->realSize - 1];
+	child->realSize += 1;
+	sibling->realSize -= 1;
+}
+
+void Btree::Node::borrowFromNext(int index)
+{
+	Node* child = childs[index];
+	Node* sibling = childs[index + 1];
+	child->values[child->realSize] = values[index];
+	if (!child->leaf)
+	{
+		child->childs[child->realSize + 1] = sibling->childs[0];
+	}
+	values[index] = sibling->values[0];
+	for (int i = 1; i < sibling->realSize; ++i)
+	{
+		sibling->values[i - 1] = sibling->values[i];
+	}
+	if (!sibling->leaf)
+	{
+		for (int i = 1; i <= sibling->realSize; ++i)
+		{
+			sibling->childs[i - 1] = sibling->childs[i];
+		}
+	}
+	child->realSize += 1;
+	sibling->realSize -= 1;
+}
+
+void Btree::Node::merge(int index)
+{
+	Node* child = childs[index];
+	Node* sibling = childs[index + 1];
+	child->values[t - 1] = values[index];
+	for (int i = 0; i < sibling->realSize; ++i)
+	{
+		child->values[i + t] = sibling->values[i];
+	}
+	if (!child->leaf)
+	{
+		for (int i = 0; i <= sibling->realSize; i++)
+		{
+			child->childs[i + t] = sibling->childs[i];
+		}
+	}
+	for (int i = index + 1; i < realSize; ++i)
+	{
+		values[i - 1] = values[i];
+	}
+	for (int i = index + 2; i <= realSize; ++i)
+	{
+		childs[i - 1] = childs[i];
+	}
+	child->realSize += sibling->realSize + 1;
+	realSize--;
+	delete (sibling);
 }

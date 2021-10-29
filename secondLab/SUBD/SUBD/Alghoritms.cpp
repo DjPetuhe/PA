@@ -47,7 +47,7 @@ vector<int> Alghoritms::ShuffleOrder(int amount)
     return shuffle;
 }
 
-pair<int, string> Alghoritms::sharrSearch(vector<pair<int, string>> &values, int realSize, int key)
+pair<int, string> Alghoritms::sharrSearch(vector<pair<int, string>> &values, int realSize, int key, int& index)
 {
     int k = log2(realSize);
     int i = pow(2,k);
@@ -55,20 +55,21 @@ pair<int, string> Alghoritms::sharrSearch(vector<pair<int, string>> &values, int
     {
         int l = log2(realSize - pow(2,k) + 1);
         i = realSize + 1 - pow(2, l);
-        return homogeneousBinarySearch(values, key, i, l, realSize);
+        return homogeneousBinarySearch(values, key, i, l, realSize, index);
     }
     else if (values[i - 1].first > key)
     {
-        return homogeneousBinarySearch(values, key, i, k, realSize);
+        return homogeneousBinarySearch(values, key, i, k, realSize, index);
     }
     else
     {
+        index = i - 1;
         return values[i - 1];
     }
     return {};
 }
 
-std::pair<int, std::string> Alghoritms::homogeneousBinarySearch(std::vector<std::pair<int, std::string>>& values, int key, int i, int l, int realSize)
+std::pair<int, std::string> Alghoritms::homogeneousBinarySearch(std::vector<std::pair<int, std::string>>& values, int key, int i, int l, int realSize, int& index)
 {
     vector<bool> visited;
     for (int j = 0; j < values.size(); j++)
@@ -92,23 +93,28 @@ std::pair<int, std::string> Alghoritms::homogeneousBinarySearch(std::vector<std:
         }
         else
         {
+            index = i - 1;
             return values[i - 1];
         }
         if (i == 0)
         {
+            index = 0;
             return pair<int, string>(-1, to_string(i + 1));
         }
         if (i == realSize + 1)
         {
+            index = realSize;
             return pair<int, string>(-1, to_string(i - 1));
         }
     } while (key != values[i - 1].first && visited[i - 1] != true);
     if (values[i - 1].first == key)
     {
+        index = i - 1;
         return values[i - 1];
     }
     else
     {
+        index = i - 1;
         return pair<int, string>(-1,to_string(i));
     }
     return std::pair<int, std::string>();

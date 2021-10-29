@@ -42,6 +42,16 @@ void ConsoleMenu::findElement(Btree& tree, int key)
 	}
 }
 
+void ConsoleMenu::deleteElement(Btree& tree, int key)
+{
+
+}
+
+void ConsoleMenu::editElement(Btree& tree, int key, std::string)
+{
+	bool deleted = tree.
+}
+
 Btree ConsoleMenu::readFile()
 {
 	Btree tree(10);
@@ -76,7 +86,7 @@ void ConsoleMenu::startMenu()
 	{
 		system("cls");
 		cout << "Current database has: " << amountOfElements << " elements\n\n";
-		cout << "Enter number of action:\n(1)Add random elements\n(2)Delete all elements\n(3)Print all elements\n(4)Find element\n(5)Exit\n";
+		cout << "Enter number of action:\n(1)Add random elements\n(2)Delete all elements\n(3)Print all elements\n(4)Find element\n(5)Delete element\n(6)Edit element\n(7)Exit\n";
 		cin >> tempChoose;
 		system("cls");
 		if (tempChoose == 1)
@@ -109,5 +119,24 @@ void ConsoleMenu::startMenu()
 			findElement(tree, tempKey);
 			system("pause");
 		}
-	} while (tempChoose != 5);
+		else if (tempChoose == 5)
+		{
+			int tempKey;
+			cout << "Enter the key of the element, that you want to remove:\n";
+			cin >> tempKey;
+			system("cls");
+			deleteElement(tree, tempKey);
+			system("pause");
+		}
+		else if (tempChoose == 6)
+		{
+			int tempKey;
+			string tempStr;
+			cout << "Enter the key of the element, that you want to edit:\n";
+			cin >> tempKey;
+			cout << "\nEnter the new value of the element:\n";
+			cin >> tempStr;
+			editElement(tree, tempKey, tempStr);
+		}
+	} while (tempChoose != 7);
 }
