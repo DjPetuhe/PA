@@ -3,7 +3,7 @@
 #include "Alghoritms.h"
 using namespace std;
 
-vector<pair<int, string>> Alghoritms::generateRandomElements(int amount, int& amountOfElements)
+vector<pair<int, string>> Alghoritms::generateRandomElements(int amount, int& amountOfElements, int& lastNumber)
 {
     vector<pair<int, string>> newValues;
     string tempStr;
@@ -22,7 +22,8 @@ vector<pair<int, string>> Alghoritms::generateRandomElements(int amount, int& am
             }
         }
         amountOfElements++;
-        tempPair.first = amountOfElements;
+        lastNumber++;
+        tempPair.first = lastNumber;
         tempPair.second = tempStr;
         newValues.push_back(tempPair);
         tempStr.clear();

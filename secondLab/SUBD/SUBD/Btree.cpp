@@ -20,15 +20,15 @@ void Btree::dfsTraverse(bool toFile)
 	}
 }
 
-pair<int, string> Btree::bTreeSearch(int key)
+pair<int, string> Btree::bTreeSearch(int key, string& newValue)
 {
 	if (root == nullptr)
 	{
-		return pair<int,string>();
+		return pair<int,string>(-1, "");
 	}
 	else
 	{
-		return root->bTreeSearch(key);
+		return root->bTreeSearch(key, newValue);
 	}
 }
 
@@ -68,7 +68,7 @@ bool Btree::bTreeDelete(int key)
 	{
 		return false;
 	}
-	root->bTreeDelete(key);
+	bool deleted = root->bTreeDelete(key);
 	if (root->realSize == 0)
 	{
 		Node* temp = root;
@@ -82,7 +82,7 @@ bool Btree::bTreeDelete(int key)
 		}
 		delete temp;
 	}
-	return false;
+	return deleted;
 }
 
 bool Btree::bTreeEdit(int key, std::string newStr)
@@ -189,10 +189,10 @@ void Btree::Node::dfsTraverse(bool toFile)
 	}
 }
 
-pair<int,string> Btree::Node::bTreeSearch(int key)
+pair<int,string> Btree::Node::bTreeSearch(int key, string& newValue)
 {
-	int buf;
-	pair<int, string> returnment = Alghoritms::sharrSearch(this->values, this->realSize, key, buf);
+	int index;
+	pair<int, string> returnment = Alghoritms::sharrSearch(this->values, this->realSize, key, index);
 	if (returnment.first == -1)
 	{
 		if (leaf == true)
@@ -203,18 +203,27 @@ pair<int,string> Btree::Node::bTreeSearch(int key)
 		{
 			if (values[stoi(returnment.second) - 1].first > key)
 			{
-				return this->childs[stoi(returnment.second) - 1]->bTreeSearch(key);
+				return this->childs[stoi(returnment.second) - 1]->bTreeSearch(key, newValue);
 			}
 			else
 			{
-				return this->childs[stoi(returnment.second)]->bTreeSearch(key);
+				return this->childs[stoi(returnment.second)]->bTreeSearch(key, newValue);
 			}
 		}
 
 	}
 	else
 	{
-		return returnment;
+		if (newValue.empty())
+		{
+			return returnment;
+		}
+		else
+		{
+			returnment.second = newValue;
+			values[index] = returnment;
+			return returnment;
+		}
 	}
 }
 
@@ -258,7 +267,7 @@ bool Btree::Node::bTreeDelete(int key)
 			childs[index]->bTreeDelete(key);
 		}
 	}
-	return false;
+	return true;
 }
 
 void Btree::Node::bTreeRemoveFromLeaf(int index)

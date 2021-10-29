@@ -6,12 +6,14 @@ using namespace std;
 
 void ConsoleMenu::addToBTree(int amount, Btree &tree)
 {
-	vector<pair<int, string>> elements = Alghoritms::generateRandomElements(amount, amountOfElements);
+	vector<pair<int, string>> elements = Alghoritms::generateRandomElements(amount, amountOfElements, lastNumber);
 	vector<int> order = Alghoritms::ShuffleOrder(amount);
 	for (int i = 0; i < amount; i++)
 	{
 		tree.bTreeInsert(elements[order[i]]);
 	}
+	std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+	file.close();
 	tree.dfsTraverse(true);
 }
 
@@ -22,6 +24,7 @@ void ConsoleMenu::deleteBTreeElements(Btree &tree)
 	std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
 	file.close();
 	amountOfElements = 0;
+	lastNumber = 0;
 }
 
 void ConsoleMenu::printElementsToConsole(Btree &tree)
@@ -31,7 +34,8 @@ void ConsoleMenu::printElementsToConsole(Btree &tree)
 
 void ConsoleMenu::findElement(Btree& tree, int key)
 {
-	pair<int, string> searchedElement = tree.bTreeSearch(key);
+	string buf;
+	pair<int, string> searchedElement = tree.bTreeSearch(key, buf);
 	if (searchedElement.first == -1)
 	{
 		cout << "Searched element wasnt found!\n";
@@ -44,19 +48,39 @@ void ConsoleMenu::findElement(Btree& tree, int key)
 
 void ConsoleMenu::deleteElement(Btree& tree, int key)
 {
-
+	bool deleted = tree.bTreeDelete(key);
+	if (!deleted)
+	{
+		cout << "There is no element with such key!" << endl;
+	}
+	else
+	{
+		cout << "Element has been succesefully deleted!" << endl;
+		amountOfElements--;
+		std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+		file.close();
+		tree.dfsTraverse(true);
+	}
 }
 
-void ConsoleMenu::editElement(Btree& tree, int key, std::string)
+void ConsoleMenu::editElement(Btree& tree, int key, string newValue)
 {
-	bool deleted = tree.
+	pair<int, string> editedElement = tree.bTreeSearch(key, newValue);
+	if (editedElement.first == -1)
+	{
+		cout << "The element you wanted to edit wasnt found!\n";
+	}
+	else
+	{
+		cout << "Element was edited:\nkey: " << editedElement.first << " new value: " << editedElement.second << endl;
+	}
 }
 
 Btree ConsoleMenu::readFile()
 {
 	Btree tree(10);
 	ifstream file("database.txt");
-	int tempKey;
+	int tempKey = 0;
 	string tempStr;
 	pair<int, string> tempValue;
 	if (file.is_open() && !(file.peek() == ifstream::traits_type::eof()))
@@ -73,6 +97,10 @@ Btree ConsoleMenu::readFile()
 				amountOfElements++;
 			}
 		}
+	}
+	if (tempKey != 0)
+	{
+		lastNumber = tempKey;
 	}
 	file.close();
 	return tree;
@@ -136,7 +164,9 @@ void ConsoleMenu::startMenu()
 			cin >> tempKey;
 			cout << "\nEnter the new value of the element:\n";
 			cin >> tempStr;
+			system("cls");
 			editElement(tree, tempKey, tempStr);
+			system("pause");
 		}
 	} while (tempChoose != 7);
 }
