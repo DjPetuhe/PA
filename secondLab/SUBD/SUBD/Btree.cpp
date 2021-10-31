@@ -85,11 +85,6 @@ bool Btree::bTreeDelete(int key)
 	return deleted;
 }
 
-bool Btree::bTreeEdit(int key, std::string newStr)
-{
-	return false;
-}
-
 Btree::Node::Node(int newT, bool newLeaf)
 {
 	t = newT;

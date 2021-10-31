@@ -34,6 +34,5 @@ public:
 	std::pair<int,std::string> bTreeSearch(int key, std::string& newValue);
 	void bTreeInsert(std::pair<int, std::string> newValue);
 	bool bTreeDelete(int key);
-	bool bTreeEdit(int key, std::string newStr);
 };
 
