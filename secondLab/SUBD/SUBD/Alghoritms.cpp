@@ -48,29 +48,29 @@ vector<int> Alghoritms::ShuffleOrder(int amount)
     return shuffle;
 }
 
-pair<int, string> Alghoritms::sharrSearch(vector<pair<int, string>> &values, int realSize, int key, int& index)
+pair<int, string> Alghoritms::sharrSearch(vector<pair<int, string>> &values, int realSize, int key, int& index, int& comparisons)
 {
     int k = log2(realSize);
     int i = pow(2,k);
+    comparisons++;
     if (values[i - 1].first < key)
     {
         int l = log2(realSize - pow(2,k) + 1);
         i = realSize + 1 - pow(2, l);
-        return homogeneousBinarySearch(values, key, i, l, realSize, index);
+        return homogeneousBinarySearch(values, key, i, l, realSize, index, comparisons);
     }
     else if (values[i - 1].first > key)
     {
-        return homogeneousBinarySearch(values, key, i, k, realSize, index);
+        return homogeneousBinarySearch(values, key, i, k, realSize, index, comparisons);
     }
     else
     {
         index = i - 1;
         return values[i - 1];
     }
-    return {};
 }
 
-std::pair<int, std::string> Alghoritms::homogeneousBinarySearch(std::vector<std::pair<int, std::string>>& values, int key, int i, int l, int realSize, int& index)
+pair<int, string> Alghoritms::homogeneousBinarySearch(vector<pair<int, string>>& values, int key, int i, int l, int realSize, int& index, int& comparisons)
 {
     vector<bool> visited;
     for (int j = 0; j < values.size(); j++)
@@ -84,6 +84,7 @@ std::pair<int, std::string> Alghoritms::homogeneousBinarySearch(std::vector<std:
         visited[i - 1] = true;
         b = pow(2, l - j);
         j++;
+        comparisons++;
         if (values[i - 1].first < key)
         {
             i += (b / 2) + 1;
@@ -118,5 +119,5 @@ std::pair<int, std::string> Alghoritms::homogeneousBinarySearch(std::vector<std:
         index = i - 1;
         return pair<int, string>(-1,to_string(i));
     }
-    return std::pair<int, std::string>();
+    return pair<int, string>();
 }

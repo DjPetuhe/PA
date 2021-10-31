@@ -15,7 +15,7 @@ class Btree
 		void bTreeSplitChild(int i, Node* current);
 		void bTreeInsertNonfull(std::pair<int, std::string> newValue);
 		void dfsTraverse(bool toFile);
-		std::pair<int, std::string> bTreeSearch(int key, std::string& newValue);
+		std::pair<int, std::string> bTreeSearch(int key, std::string& newValue, int& comparisons);
 		bool bTreeDelete(int key);
 		void bTreeRemoveFromLeaf(int index);
 		void bTreeRemoveFromNonLeaf(int index);
@@ -31,7 +31,7 @@ class Btree
 public:
 	Btree(int newT);
 	void dfsTraverse(bool toFile);
-	std::pair<int,std::string> bTreeSearch(int key, std::string& newValue);
+	std::pair<int,std::string> bTreeSearch(int key, std::string& newValue, int& comparisons);
 	void bTreeInsert(std::pair<int, std::string> newValue);
 	bool bTreeDelete(int key);
 };

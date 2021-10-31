@@ -12,7 +12,7 @@ void ConsoleMenu::addToBTree(int amount, Btree &tree)
 	{
 		tree.bTreeInsert(elements[order[i]]);
 	}
-	std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+	ofstream file("database.txt", ofstream::out | ofstream::trunc);
 	file.close();
 	tree.dfsTraverse(true);
 }
@@ -21,7 +21,7 @@ void ConsoleMenu::deleteBTreeElements(Btree &tree)
 {
 	Btree newTree(10);
 	tree = newTree;
-	std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+	ofstream file("database.txt", ofstream::out | ofstream::trunc);
 	file.close();
 	amountOfElements = 0;
 	lastNumber = 0;
@@ -35,14 +35,17 @@ void ConsoleMenu::printElementsToConsole(Btree &tree)
 void ConsoleMenu::findElement(Btree& tree, int key)
 {
 	string buf;
-	pair<int, string> searchedElement = tree.bTreeSearch(key, buf);
+	int comparisons = 0;
+	pair<int, string> searchedElement = tree.bTreeSearch(key, buf, comparisons);
 	if (searchedElement.first == -1)
 	{
 		cout << "Searched element wasnt found!\n";
+		cout << "Amount of comparisons: " << comparisons << endl;
 	}
 	else
 	{
 		cout << "Searched element:\nkey: " << searchedElement.first << " value: " << searchedElement.second << endl;
+		cout << "Amount of comparisons: " << comparisons << endl;
 	}
 }
 
@@ -57,7 +60,7 @@ void ConsoleMenu::deleteElement(Btree& tree, int key)
 	{
 		cout << "Element has been succesefully deleted!" << endl;
 		amountOfElements--;
-		std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+		ofstream file("database.txt", ofstream::out | ofstream::trunc);
 		file.close();
 		tree.dfsTraverse(true);
 	}
@@ -65,7 +68,8 @@ void ConsoleMenu::deleteElement(Btree& tree, int key)
 
 void ConsoleMenu::editElement(Btree& tree, int key, string newValue)
 {
-	pair<int, string> editedElement = tree.bTreeSearch(key, newValue);
+	int buf = 0;
+	pair<int, string> editedElement = tree.bTreeSearch(key, newValue, buf);
 	if (editedElement.first == -1)
 	{
 		cout << "The element you wanted to edit wasnt found!\n";
@@ -73,7 +77,7 @@ void ConsoleMenu::editElement(Btree& tree, int key, string newValue)
 	else
 	{
 		cout << "Element was edited:\nkey: " << editedElement.first << " new value: " << editedElement.second << endl;
-		std::ofstream file("database.txt", std::ofstream::out | std::ofstream::trunc);
+		ofstream file("database.txt", ofstream::out | ofstream::trunc);
 		file.close();
 		tree.dfsTraverse(true);
 	}
