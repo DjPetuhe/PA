@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 #include "ConsoleMenu.h"
-#include "ColoredMap.h"
 #include "ABCalgorithm.h"
 using namespace std;
 
@@ -26,13 +25,16 @@ void ConsoleMenu::startMenu()
 	cin >> choise;
 	system("cls");
 	vector<vector<bool>> graph;
-	if (choise)
+	if (!choise)
 	{
 		graph = generateRandom();
-		printGraph(graph);
-		system("pause");
-		system("cls");
-		cout << "\nDo you want to save this graph to file?\n";
+		if (this->sizeOfGraph <= 20)
+		{
+			printGraph(graph);
+			system("pause");
+			system("cls");
+		}
+		cout << "\nDo you want to save this graph to file?\n(0)no\n(1)yes\n";
 		cin >> choise;
 		if (choise)
 		{
@@ -106,15 +108,23 @@ void ConsoleMenu::printGraph(vector<vector<bool>>& graph)
 	cout << "       ";
 	for (int i = 0; i < this->sizeOfGraph; i++)
 	{
-		cout << setw(4) << i;
+		cout << setw(4) << i + 1;
 	}
+	cout << endl;
+	cout << "       ";
 	for (int i = 0; i < this->sizeOfGraph; i++)
 	{
-		cout << setw(5) << i << " | ";
+		cout << "____";
+	}
+	cout << "_"<<endl;
+	for (int i = 0; i < this->sizeOfGraph; i++)
+	{
+		cout << setw(5) << i + 1 << " | ";
 		for (int j = 0; j < this->sizeOfGraph; j++)
 		{
 			cout << setw(4) << graph[i][j];
 		}
+		cout << endl;
 	}
 }
 
@@ -145,6 +155,7 @@ vector<vector<bool>> ConsoleMenu::readFromFile()
 		cout << "\nCant open file :(\n";
 		return {};
 	}
+	file.close();
 	return graph;
 }
 
@@ -164,6 +175,7 @@ void ConsoleMenu::printToFile(vector<vector<bool>>& graph)
 		}
 		file << '\n';
 	}
+	file.close();
 }
 
 void ConsoleMenu::colorizeGraph(std::vector<std::vector<bool>>& graph)
@@ -184,4 +196,24 @@ void ConsoleMenu::colorizeGraph(std::vector<std::vector<bool>>& graph)
 			AmountOfColorResults.push_back(bestResult.getAmountOfColors());
 		}
 	}
+	printResult(AmountOfColorResults, bestResult);
+}
+
+void ConsoleMenu::printResult(std::vector<int> AmountOfColors, ColoredMap bestResult)
+{
+	vector<int> Colors = bestResult.getColors();
+	ofstream file("resutls.txt");
+	file << "Best result after " << this->upperLineOfIterations << " iterations:\n\n";
+	file << "Amount of colors: " << bestResult.getAmountOfColors() << '\n';
+	file << "Colors of nodes:\n";
+	for (int i = 0; i < this->sizeOfGraph; i++)
+	{
+		file << "Node #" << i + 1 << " color: " << ColoredMap::getColorName(Colors[i]);
+	}
+	file << "Best results by iterations number: " << "\n\n";
+	for (int i = 0; i < this->upperLineOfIterations - this->bottomLineOfIterations; i++)
+	{
+		file << "iteration #" << setw(6) << i + this->bottomLineOfIterations << " result: " << AmountOfColors[i] << '\n';
+	}
+	file.close();
 }

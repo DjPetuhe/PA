@@ -1,4 +1,5 @@
 #include <vector>
+#include "ColoredMap.h"
 #pragma once
 
 class ConsoleMenu
@@ -15,6 +16,7 @@ class ConsoleMenu
 	std::vector<std::vector<bool>> readFromFile();
 	void printToFile(std::vector<std::vector<bool>>& graph);
 	void colorizeGraph(std::vector<std::vector<bool>>& graph);
+	void printResult(std::vector<int> AmountOfColors, ColoredMap bestResult);
 public:
 	ConsoleMenu(int newSizeOfGraph, int newMaxPowerOfNodes, int newMinPowerOfNode, int newAmountOfBees, int newAmountOfScouts, int newBottomLineOfIterations, int newUpperLineOfIterations);
 	void startMenu();
