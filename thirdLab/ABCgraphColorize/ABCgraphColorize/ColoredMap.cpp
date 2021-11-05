@@ -35,6 +35,19 @@ std::vector<std::vector<bool>> ColoredMap::getGraph()
 	return graph;
 }
 
+bool ColoredMap::finished()
+{
+	bool finished = true;
+	for (int i = 0; i < colors.size(); i++)
+	{
+		if (!colors[i])
+		{
+			finished = false;
+		}
+	}
+	return finished;
+}
+
 std::string ColoredMap::getColorName(int i)
 {
 	switch (i)

@@ -13,7 +13,7 @@ ConsoleMenu::ConsoleMenu(int newSizeOfGraph, int newMaxPowerOfNodes, int newMinP
 	this->maxPowerOfNode = newMaxPowerOfNodes;
 	this->minPowerOfNode = newMinPowerOfNode;
 	this->amountOfBees = newAmountOfBees;
-	this->amountOfScouts = newAmountOfBees;
+	this->amountOfScouts = newAmountOfScouts;
 	this->bottomLineOfIterations = newBottomLineOfIterations;
 	this->upperLineOfIterations = newUpperLineOfIterations;
 }
@@ -72,7 +72,7 @@ vector<vector<bool>> ConsoleMenu::generateRandom()
 			}
 			else
 			{
-				if (!(rand() % 20) && amountOfConnections <= 20)
+				if (!(rand() % 10) && amountOfConnections <= 20)
 				{
 					graph[i][j] = 1;
 					graph[j][i] = 1;
@@ -208,9 +208,9 @@ void ConsoleMenu::printResult(std::vector<int> AmountOfColors, ColoredMap bestRe
 	file << "Colors of nodes:\n";
 	for (int i = 0; i < this->sizeOfGraph; i++)
 	{
-		file << "Node #" << i + 1 << " color: " << ColoredMap::getColorName(Colors[i]);
+		file << "Node #" << i + 1 << " color: " << ColoredMap::getColorName(Colors[i]) << '\n';
 	}
-	file << "Best results by iterations number: " << "\n\n";
+	file << "\nBest results by iterations number: " << "\n\n";
 	for (int i = 0; i < this->upperLineOfIterations - this->bottomLineOfIterations; i++)
 	{
 		file << "iteration #" << setw(6) << i + this->bottomLineOfIterations << " result: " << AmountOfColors[i] << '\n';

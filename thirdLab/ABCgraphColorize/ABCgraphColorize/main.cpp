@@ -1,7 +1,10 @@
 #include "ConsoleMenu.h"
+#include <random>
+#include <time.h>
 
 int main()
 {
-	ConsoleMenu menu(20, 20, 1, 30, 2, 20, 1000);
+	//srand(time(NULL));
+	ConsoleMenu menu(200, 20, 1, 30, 2, 20, 1000);
 	menu.startMenu();
 }

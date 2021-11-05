@@ -15,6 +15,7 @@ public:
 	std::vector<int> getColors();
 	void setColors(std::vector<int> newColors);
 	std::vector<std::vector<bool>> getGraph();
+	bool finished();
 	static std::string getColorName(int i);
 };
 
