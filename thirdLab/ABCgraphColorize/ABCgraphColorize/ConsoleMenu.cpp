@@ -34,7 +34,7 @@ void ConsoleMenu::startMenu()
 			system("pause");
 			system("cls");
 		}
-		cout << "\nDo you want to save this graph to file?\n(0)no\n(1)yes\n";
+		cout << "Do you want to save this graph to file?\n(0)no\n(1)yes\n";
 		cin >> choise;
 		if (choise)
 		{
@@ -45,6 +45,8 @@ void ConsoleMenu::startMenu()
 	{
 		graph = readFromFile();
 	}
+	system("cls");
+	cout << "Colorizing maps....\n";
 	colorizeGraph(graph);
 }
 
@@ -186,10 +188,6 @@ void ConsoleMenu::colorizeGraph(std::vector<std::vector<bool>>& graph)
 	vector<int> AmountOfColorResults;
 	for (int i = 0; i < this->upperLineOfIterations; i++)
 	{
-		if (i == 41)
-		{
-			i = 41;
-		}
 		result = ABCalgorithm::findResult(uncoloredMap, this->amountOfBees, this->amountOfScouts);
 		if ((i == 0) || (result.getAmountOfColors() < bestResult.getAmountOfColors()))
 		{
@@ -199,7 +197,12 @@ void ConsoleMenu::colorizeGraph(std::vector<std::vector<bool>>& graph)
 		{
 			AmountOfColorResults.push_back(bestResult.getAmountOfColors());
 		}
+		if ((i + 1) % 100 == 0 || i == 0)
+		{
+			cout << "\nIteration #" << setw(4) << i + 1 << " Chromatic number: " << bestResult.getAmountOfColors();
+		}
 	}
+	cout << "\n\nColorizing finihsed!";
 	printResult(AmountOfColorResults, bestResult);
 }
 

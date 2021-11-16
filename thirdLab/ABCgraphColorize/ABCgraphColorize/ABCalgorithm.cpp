@@ -22,7 +22,6 @@ ColoredMap ABCalgorithm::findResult(ColoredMap uncoloredMap, int amountOfBees, i
 		if (choosenNode != -1)
 		{
 			nectar[choosenNode] = calculateNectar(uncoloredMap, choosenNode);
-			//visitedByScouts[choosenNode] = true;
 		}
 		else
 		{
@@ -69,7 +68,6 @@ ColoredMap ABCalgorithm::findResult(ColoredMap uncoloredMap, int amountOfBees, i
 			if (choosenNode != -1)
 			{
 				nectar[choosenNode] = calculateNectar(uncoloredMap, choosenNode);
-				//visitedByScouts[choosenNode] = true;
 			}
 			else
 			{
