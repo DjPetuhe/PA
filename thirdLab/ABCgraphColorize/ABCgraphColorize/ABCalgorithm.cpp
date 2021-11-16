@@ -22,7 +22,7 @@ ColoredMap ABCalgorithm::findResult(ColoredMap uncoloredMap, int amountOfBees, i
 		if (choosenNode != -1)
 		{
 			nectar[choosenNode] = calculateNectar(uncoloredMap, choosenNode);
-			visitedByScouts[choosenNode] = true;
+			//visitedByScouts[choosenNode] = true;
 		}
 		else
 		{
@@ -35,18 +35,29 @@ ColoredMap ABCalgorithm::findResult(ColoredMap uncoloredMap, int amountOfBees, i
 		int nectarSum = 0;
 		for (int i = 0; i < amountOfScouts; i++)
 		{
-			nectarSum += nectar[indexes[i]];
+			if (i < indexes.size())
+			{
+				nectarSum += nectar[indexes[i]];
+			}
 		}
 		for (int i = 0; i < amountOfScouts; i++)
 		{
-			if (nectar[indexes[i]] > 0)
+			if (i < indexes.size())
 			{
-				double p = (double)nectar[indexes[i]] / (double)nectarSum;
-				int amountOfForagerInNode = amountOfForager * p;
-				if (colorizeNode(amountOfForagerInNode, nectar[indexes[i]], indexes[i], uncoloredMap, nectar))
+				if (nectar[indexes[i]] > 0)
 				{
-					amountOfForager--;
-					temp++;
+					visitedByScouts[indexes[i]] = true;
+					double p = (double)nectar[indexes[i]] / (double)nectarSum;
+					int amountOfForagerInNode = amountOfForager * p;
+					if (colorizeNode(amountOfForagerInNode, nectar[indexes[i]], indexes[i], uncoloredMap, nectar))
+					{
+						amountOfForager--;
+						temp++;
+					}
+				}
+				else if (nectar[indexes[i]] == 0)
+				{
+					colorizeNode(0, nectar[indexes[i]], indexes[i], uncoloredMap, nectar);
 				}
 			}
 		}
@@ -58,7 +69,7 @@ ColoredMap ABCalgorithm::findResult(ColoredMap uncoloredMap, int amountOfBees, i
 			if (choosenNode != -1)
 			{
 				nectar[choosenNode] = calculateNectar(uncoloredMap, choosenNode);
-				visitedByScouts[choosenNode] = true;
+				//visitedByScouts[choosenNode] = true;
 			}
 			else
 			{
@@ -150,6 +161,7 @@ bool ABCalgorithm::colorizeNode(int amountOfForagerInNode, int& nectarOfCurrentN
 		colors[index] = findPossibleColor(uncoloredMap, index);
 		uncoloredMap.setColors(colors);
 		changeNectar(index, nectar, uncoloredMap);
+		nectarOfCurrentNode = -1;
 		return true;
 	}
 	uncoloredMap.setColors(colors);

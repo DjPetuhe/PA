@@ -186,12 +186,16 @@ void ConsoleMenu::colorizeGraph(std::vector<std::vector<bool>>& graph)
 	vector<int> AmountOfColorResults;
 	for (int i = 0; i < this->upperLineOfIterations; i++)
 	{
+		if (i == 41)
+		{
+			i = 41;
+		}
 		result = ABCalgorithm::findResult(uncoloredMap, this->amountOfBees, this->amountOfScouts);
 		if ((i == 0) || (result.getAmountOfColors() < bestResult.getAmountOfColors()))
 		{
 			bestResult = result;
 		}
-		if (i >= this->bottomLineOfIterations)
+		if (i >= this->bottomLineOfIterations - 1)
 		{
 			AmountOfColorResults.push_back(bestResult.getAmountOfColors());
 		}
@@ -211,7 +215,7 @@ void ConsoleMenu::printResult(std::vector<int> AmountOfColors, ColoredMap bestRe
 		file << "Node #" << i + 1 << " color: " << ColoredMap::getColorName(Colors[i]) << '\n';
 	}
 	file << "\nBest results by iterations number: " << "\n\n";
-	for (int i = 0; i < this->upperLineOfIterations - this->bottomLineOfIterations; i++)
+	for (int i = 0; i < this->upperLineOfIterations - this->bottomLineOfIterations + 1; i++)
 	{
 		file << "iteration #" << setw(6) << i + this->bottomLineOfIterations << " result: " << AmountOfColors[i] << '\n';
 	}
