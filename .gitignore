@@ -18,4 +18,9 @@ Debug/
 
 *.jpg
 
-database.txt
+*.txt
+Отчеты/
+
+thirdLab/ABCgraphColorize/ABCgraphColorize/Release/
+
+thirdLab/ABCgraphColorize/Release/
