@@ -5,7 +5,7 @@
 
 int main()
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 	ConsoleMenu menu(300);
 	menu.startMenu();
 }

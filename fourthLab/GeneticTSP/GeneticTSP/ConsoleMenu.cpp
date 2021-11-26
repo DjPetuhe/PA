@@ -51,6 +51,7 @@ void ConsoleMenu::startMenu()
 	system("cls");
 	cout << "Do you want to use:\n(0)Improvement in random point\n(1)Improvement in worst Point\n" << endl;
 	cin >> TypeOfLocalImprovement;
+	system("cls");
 	cout << "Finding path...\n";
 	GAsolve(graph);
 }
@@ -168,7 +169,7 @@ void ConsoleMenu::GAsolve(vector<vector<int>>& graph)
 			cout << "\nIteration #" << setw(4) << i + 1 << " Length: " << bestResult.getLength();
 		}
 	}
-	cout << "\n\nColorizing finihsed!";
+	cout << "\n\nAlgorithm finihsed!";
 	printResult(lengthResults, bestResult);
 }
 
@@ -183,11 +184,11 @@ void ConsoleMenu::printResult(vector<int> lengths, Population bestResult)
 	{
 		if (i != 0)
 		{
-			cout << "--->";
+			file << "--->";
 		}
-		cout << "City#" << order[i] + 1;
+		file << "City#" << order[i] + 1;
 	}
-	cout << "--->City#" << order[0] + 1<< "\n\n";
+	file << "--->City#" << order[0] + 1<< "\n\n";
 	file << "\nBest results by iterations number: " << "\n\n";
 	for (int i = 0; i < 1000; i++)
 	{

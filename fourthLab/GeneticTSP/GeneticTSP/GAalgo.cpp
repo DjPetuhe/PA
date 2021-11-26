@@ -100,11 +100,11 @@ std::vector<int> GAalgo::generateCrossingOverPoints(int TypeOfCrossingover, int 
 	{
 		if (i == 0)
 		{
-			point[i] = rand() % (size - (i - amountOfPoints));
+			point[i] = rand() % (size - amountOfPoints);
 		}
 		else
 		{
-			point[i] = point[i - 1] + rand() % (size - (i - amountOfPoints) - point[i - 1]);
+			point[i] = point[i - 1] + rand() % (size - (amountOfPoints + point[i - 1]));
 		}
 	}
 	return point;
@@ -137,7 +137,7 @@ void GAalgo::mutation(vector<int>& child, int mutationChance, int TypeOfMutation
 		{
 			for (int i = 0; i < child.size(); i++)
 			{
-				mutatedChild.push_back(child[child.size() - i]);
+				mutatedChild.push_back(child[child.size() - i - 1]);
 			}
 		}
 		if (calculateLength(mutatedChild) < calculateLength(child))
@@ -150,6 +150,7 @@ void GAalgo::mutation(vector<int>& child, int mutationChance, int TypeOfMutation
 int GAalgo::calculateLength(vector<int> order)
 {
 	int length = 0;
+	vector<int> temp;
 	for (int i = 0; i < order.size() - 1; i++)
 	{
 		length += graph[order[i]][order[i + 1]];
