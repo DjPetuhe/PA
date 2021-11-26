@@ -46,10 +46,10 @@ void ConsoleMenu::startMenu()
 	cout << "Do you want to use:\n(0)One-point crossover\n(1)Two-point crossover\n(2)Three-point crossover\n" << endl;
 	cin >> TypeOfCrossingover;
 	system("cls");
-	cout << "Do you want to use:\n(0)Swap mutation\n(1)Reverse mutation\n" << endl;
+	cout << "Do you want to use:\n(0)Swap mutation\n(1)Reverse mutation\n(2)No mutation\n" << endl;
 	cin >> TypeOfMutation;
 	system("cls");
-	cout << "Do you want to use:\n(0)Improvement in random point\n(1)Improvement in worst Point\n" << endl;
+	cout << "Do you want to use:\n(0)Improvement in random point\n(1)Improvement in worst Point\n(2)No improvement\n" << endl;
 	cin >> TypeOfLocalImprovement;
 	system("cls");
 	cout << "Finding path...\n";
@@ -109,7 +109,7 @@ vector<vector<int>> ConsoleMenu::readFromFile()
 	cin >> dir;
 	ifstream file(dir);
 	vector<vector<int>> graph(this->sizeOfGraph, vector<int>(this->sizeOfGraph));
-	bool temp;
+	int temp;
 	if (file.is_open())
 	{
 		for (int i = 0; i < this->sizeOfGraph; i++)
@@ -136,7 +136,7 @@ void ConsoleMenu::printToFile(vector<vector<int>>& graph)
 	string dir;
 	cin >> dir;
 	ofstream file(dir);
-	bool temp;
+	int temp;
 	for (int i = 0; i < this->sizeOfGraph; i++)
 	{
 		for (int j = 0; j < this->sizeOfGraph; j++)
@@ -186,9 +186,9 @@ void ConsoleMenu::printResult(vector<int> lengths, Population bestResult)
 		{
 			file << "--->";
 		}
-		file << "City#" << order[i] + 1;
+		file << order[i] + 1;
 	}
-	file << "--->City#" << order[0] + 1<< "\n\n";
+	file << "--->" << order[0] + 1<< "\n\n";
 	file << "\nBest results by iterations number: " << "\n\n";
 	for (int i = 0; i < 1000; i++)
 	{

@@ -177,11 +177,104 @@ void GAalgo::sortPopulation(vector<vector<int>>& population)
 	}
 }
 
+void GAalgo::localImprovement(std::vector<int>& child, int TypeOfLocalImprovement)
+{
+	if (TypeOfLocalImprovement)
+	{
+		int worst = 0;
+		for (int i = 0; i < child.size() - 1; i++)
+		{
+			if (graph[child[i]][child[i + 1]] > graph[child[worst]][child[worst + 1]])
+			{
+				worst = i;
+			}
+		}
+		int lowerWorst;
+		int upperWorst;
+		if (worst < 5)
+		{
+			lowerWorst = 0;
+			upperWorst = worst + 5;
+		}
+		else if (worst > 294)
+		{
+			upperWorst = 299;
+			lowerWorst = worst - 5;
+		}
+		else
+		{
+			lowerWorst = worst - 5;
+			upperWorst = worst + 5;
+		}
+		vector<int> temp;
+		for (int i = 0; i < upperWorst - lowerWorst; i++)
+		{
+			temp.push_back(child[i]);
+		}
+		vector<int> improved = improve(temp);
+		if (calculateLength(improved) < calculateLength(temp))
+		{
+			int j = 0;
+			for (int i = lowerWorst; i < upperWorst; i++)
+			{
+				child[i] = improved[j];
+				j++;
+			}
+		}
+	}
+	else
+	{
+		int lowerWorst = rand() % (child.size() - 11);
+		int upperWorst = lowerWorst + 10;
+		vector<int> temp;
+		for (int i = 0; i < upperWorst - lowerWorst; i++)
+		{
+			temp.push_back(child[i]);
+		}
+		vector<int> improved = improve(temp);
+		if (calculateLength(improved) < calculateLength(temp))
+		{
+			int j = 0;
+			for (int i = lowerWorst; i < upperWorst; i++)
+			{
+				child[i] = improved[j];
+				j++;
+			}
+		}
+	}
+}
+
+std::vector<int> GAalgo::improve(std::vector<int> part)
+{
+	vector<int> newPart;
+	vector<bool> notUsed;
+	for (int i = 0; i < part.size(); i++)
+	{
+		notUsed.push_back(true);
+	}
+	newPart.push_back(part[0]);
+	for (int i = 0; i < part.size() - 1; i++)
+	{
+		int temp = 0;
+		for (int j = i; j < part.size() - 1; j++)
+		{
+			if (graph[newPart[i]][part[j]] < graph[newPart[i]][temp] && notUsed[j] == true)
+			{
+				temp = j;
+			}
+		}
+		notUsed[temp] = false;
+		newPart.push_back(temp);
+	}
+	newPart.push_back(part[part.size() - 1]);
+	return newPart;
+}
+
 Population GAalgo::findResult(Population unsolved, int TypeOfCrossingover, int TypeOfMutation, int TypeOfLocalImprovement)
 {
 	int sizeOfPopulation = 10;
-	int amountOfGenerations = 1000;
-	int mutationPercent = 30;
+	int amountOfGenerations = 50;
+	int mutationPercent = 10;
 	int firstParentIndex, secondParentIndex;
 	vector<vector<int>> popul = generateStartPopulation(sizeOfPopulation);
 	while (amountOfGenerations > 0)
@@ -189,8 +282,16 @@ Population GAalgo::findResult(Population unsolved, int TypeOfCrossingover, int T
 		generateTwoIndex(firstParentIndex, secondParentIndex, sizeOfPopulation);
 		vector<int> firstChild = crossingOver(popul[firstParentIndex], popul[secondParentIndex], TypeOfCrossingover);
 		vector<int> secondChild = crossingOver(popul[secondParentIndex], popul[firstParentIndex], TypeOfCrossingover);
-		mutation(firstChild, mutationPercent, TypeOfMutation);
-		mutation(secondChild, mutationPercent, TypeOfMutation);
+		if (TypeOfMutation < 2)
+		{
+			mutation(firstChild, mutationPercent, TypeOfMutation);
+			mutation(secondChild, mutationPercent, TypeOfMutation);
+		}
+		if (TypeOfLocalImprovement < 2)
+		{
+			localImprovement(firstChild, TypeOfLocalImprovement);
+			localImprovement(secondChild, TypeOfLocalImprovement);
+		}
 		sortPopulation(popul);
 		while (popul.size() > sizeOfPopulation)
 		{
