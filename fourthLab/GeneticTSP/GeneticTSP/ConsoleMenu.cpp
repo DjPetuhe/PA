@@ -186,6 +186,10 @@ void ConsoleMenu::printResult(vector<int> lengths, Population bestResult)
 		{
 			file << "--->";
 		}
+		if (i % 10 == 0)
+		{
+			file << '\n';
+		}
 		file << order[i] + 1;
 	}
 	file << "--->" << order[0] + 1<< "\n\n";
