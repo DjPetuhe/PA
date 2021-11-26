@@ -140,15 +140,12 @@ vector<vector<bool>> ConsoleMenu::readFromFile()
 	bool temp;
 	if (file.is_open())
 	{
-		while (!file.eof())
+		for (int i = 0; i < this->sizeOfGraph; i++)
 		{
-			for (int i = 0; i < this->sizeOfGraph; i++)
+			for (int j = 0; j < this->sizeOfGraph; j++)
 			{
-				for (int j = 0; j < this->sizeOfGraph; j++)
-				{
-					file >> temp;
-					graph[i][j] = temp;
-				}
+				file >> temp;
+				graph[i][j] = temp;
 			}
 		}
 	}
