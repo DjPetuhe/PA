@@ -24,3 +24,9 @@ Debug/
 thirdLab/ABCgraphColorize/ABCgraphColorize/Release/
 
 thirdLab/ABCgraphColorize/Release/
+
+fourthLab/GeneticTSP/GeneticTSP/Release/
+
+*.pdb
+
+*.exe

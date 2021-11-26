@@ -7,12 +7,12 @@
 #include "GAalgo.h"
 using namespace std;
 
-ConsoleMenu::ConsoleMenu(int newSizeOfGraph, int newTypeOfCrossingover, int newTypeOfMutation, int newTypeOfLocalImprovements)
+ConsoleMenu::ConsoleMenu(int newSizeOfGraph)
 {
 	this->sizeOfGraph = newSizeOfGraph;
-	this->TypeOfCrossingover = newTypeOfCrossingover;
-	this->TypeOfMutation = newTypeOfMutation;
-	this->TypeOfLocalImprovement = newTypeOfLocalImprovements;
+	this->TypeOfCrossingover = 0;
+	this->TypeOfMutation = 0;
+	this->TypeOfLocalImprovement = 0;
 }
 
 void ConsoleMenu::startMenu()
@@ -46,7 +46,7 @@ void ConsoleMenu::startMenu()
 	cout << "Do you want to use:\n(0)One-point crossover\n(1)Two-point crossover\n(2)Three-point crossover\n" << endl;
 	cin >> TypeOfCrossingover;
 	system("cls");
-	cout << "Do you want to use:\n(0)Swap mutation\n(2)Reverse mutation\n" << endl;
+	cout << "Do you want to use:\n(0)Swap mutation\n(1)Reverse mutation\n" << endl;
 	cin >> TypeOfMutation;
 	system("cls");
 	cout << "Do you want to use:\n(0)Improvement in random point\n(1)Improvement in worst Point\n" << endl;
@@ -148,7 +148,7 @@ void ConsoleMenu::printToFile(vector<vector<int>>& graph)
 	file.close();
 }
 
-void ConsoleMenu::GAsolve(std::vector<std::vector<int>>& graph)
+void ConsoleMenu::GAsolve(vector<vector<int>>& graph)
 {
 	Population unsolved(graph);
 	Population bestResult(graph);
@@ -156,7 +156,8 @@ void ConsoleMenu::GAsolve(std::vector<std::vector<int>>& graph)
 	vector<int> lengthResults;
 	for (int i = 0; i < 1000; i++)
 	{
-		result = GAalgo::findResult(unsolved, this->TypeOfCrossingover, this->TypeOfMutation, this->TypeOfLocalImprovement);
+		GAalgo TSP(graph);
+		result = TSP.findResult(unsolved, this->TypeOfCrossingover, this->TypeOfMutation, this->TypeOfLocalImprovement);
 		if ((i == 0) || (result.getLength() < bestResult.getLength()))
 		{
 			bestResult = result;
@@ -171,7 +172,7 @@ void ConsoleMenu::GAsolve(std::vector<std::vector<int>>& graph)
 	printResult(lengthResults, bestResult);
 }
 
-void ConsoleMenu::printResult(std::vector<int> lengths, Population bestResult)
+void ConsoleMenu::printResult(vector<int> lengths, Population bestResult)
 {
 	ofstream file("resutls.txt");
 	file << "Best result after 1000 iterations:\n\n";

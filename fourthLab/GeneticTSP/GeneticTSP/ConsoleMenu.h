@@ -15,7 +15,7 @@ class ConsoleMenu
 	void GAsolve(std::vector<std::vector<int>>& graph);
 	void printResult(std::vector<int> AmountOfColors, Population bestResult);
 public:
-	ConsoleMenu(int newSizeOfGraph, int newTypeOfCrossingover, int newTypeOfMutation, int newTypeOfLocalImprovements);
+	ConsoleMenu(int newSizeOfGraph);
 	void startMenu();
 };
 

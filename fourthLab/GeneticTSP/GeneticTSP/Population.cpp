@@ -1,22 +1,23 @@
 #include "Population.h"
+using namespace std;
 
-Population::Population(std::vector<std::vector<int>> newGraph)
+Population::Population(vector<vector<int>> newGraph)
 {
 	this->graph = newGraph;
 	this->bestOrder.resize(newGraph.size());
 }
 
-std::vector<int> Population::getOrder()
+vector<int> Population::getOrder()
 {
 	return this->bestOrder;
 }
 
-void Population::setOrder(std::vector<int> newBestOrder)
+void Population::setOrder(vector<int> newBestOrder)
 {
 	this->bestOrder = newBestOrder;
 }
 
-std::vector<std::vector<int>> Population::getGraph()
+vector<vector<int>> Population::getGraph()
 {
 	return this->graph;
 }
