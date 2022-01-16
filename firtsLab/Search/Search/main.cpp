@@ -40,6 +40,7 @@ int main()
 	}
 	else
 	{
-		workWithFile::writeColored(endDirectory, c, amountOfIteration, amountOfGeneratedStates, amountOfFails);
+		double totalTime = (((double)clock() - start) / ((double)CLOCKS_PER_SEC));
+		workWithFile::writeColored(endDirectory, c, amountOfIteration, amountOfGeneratedStates, amountOfFails, totalTime);
 	}
 }

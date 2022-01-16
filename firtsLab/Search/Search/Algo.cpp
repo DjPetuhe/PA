@@ -241,7 +241,7 @@ std::vector<int> Algo::mrv()
 		int time = (((double)clock() - start) / ((double)CLOCKS_PER_SEC));
 		if ((TotalMemUsed < 500000000) && time < 1800)
 		{
-			cout << "Reload mrv # " << amountOfFails << endl;
+			cout << "Total time spend (in seconds): " << time << "\nReload mrv # " << amountOfFails << endl;
 			return this->mrv();
 		}
 	}

@@ -38,7 +38,7 @@ country workWithFile::readCountry(string directory)
 	}
 }
 
-void workWithFile::writeColored(string directory, country c, int amountOfIterations, int amountOfGeneratedStates, int amountOfFails)
+void workWithFile::writeColored(string directory, country c, int amountOfIterations, int amountOfGeneratedStates, int amountOfFails, double totalTime)
 {
 	ofstream fileName(directory);
 	if (fileName.is_open())
@@ -49,6 +49,7 @@ void workWithFile::writeColored(string directory, country c, int amountOfIterati
 		fileName << "Amount of iterations: " << amountOfIterations << endl;
 		fileName << "Amount of generated states: " << amountOfGeneratedStates << endl;
 		fileName << "Amount of fails: " << amountOfFails << endl;
+		fileName << "Total time: " << totalTime << " seconds" << endl;
 		fileName << endl << "Colored map: " << endl;
 		for (int i = 0; i < c.getAmountOfRegions(); i++)
 		{
