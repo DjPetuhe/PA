@@ -164,7 +164,7 @@ void ConsoleMenu::GAsolve(vector<vector<int>>& graph)
 			bestResult = result;
 		}
 		lengthResults.push_back(bestResult.getLength());
-		if ((i + 1) % 100 == 0 || i == 0)
+		if ((i + 1) % 100 == 0)
 		{
 			cout << "\nIteration #" << setw(4) << i + 1 << " Length: " << bestResult.getLength();
 		}

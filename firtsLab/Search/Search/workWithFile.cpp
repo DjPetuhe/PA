@@ -38,7 +38,7 @@ country workWithFile::readCountry(string directory)
 	}
 }
 
-void workWithFile::writeColored(string directory, country c)
+void workWithFile::writeColored(string directory, country c, int amountOfIterations, int amountOfGeneratedStates, int amountOfFails)
 {
 	ofstream fileName(directory);
 	if (fileName.is_open())
@@ -46,13 +46,17 @@ void workWithFile::writeColored(string directory, country c)
 		vector<string> regionsName = c.getRegionsName();
 		vector<int> regionsColor = c.getRegionsColor();
 		string tempColor;
+		fileName << "Amount of iterations: " << amountOfIterations << endl;
+		fileName << "Amount of generated states: " << amountOfGeneratedStates << endl;
+		fileName << "Amount of fails: " << amountOfFails << endl;
+		fileName << endl << "Colored map: " << endl;
 		for (int i = 0; i < c.getAmountOfRegions(); i++)
 		{
 			if (regionsColor[i] == 1) { tempColor = "red"; }
 			else if (regionsColor[i] == 2) { tempColor = "green"; }
 			else if (regionsColor[i] == 3) { tempColor = "blue"; }
 			else if (regionsColor[i] == 4) { tempColor = "yellow"; }
-			else { tempColor = "empty"; }
+			else { tempColor = "empty(" + to_string(regionsColor[i]) + ")"; }
 			fileName << regionsName[i] << " -> " << tempColor << endl;
 		}
 	}
